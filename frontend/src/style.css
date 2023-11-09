@@ -109,6 +109,9 @@ body * {
   .SearchResult {
     grid-template-columns: repeat(2, minmax(250px, 1fr));
   }
+  .ImageInfo .content-wrapper {
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 576px) {
