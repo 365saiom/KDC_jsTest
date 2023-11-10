@@ -7,6 +7,10 @@ class App {
   constructor($target) {
     this.$target = $target;
 
+    this.Loading = new Loading({
+      $target,
+    });
+
     this.DarkModeToggle = new DarkModeToggle({
       $target,
     });
@@ -14,7 +18,16 @@ class App {
     this.searchInput = new SearchInput({
       $target,
       onSearch: (keyword) => {
-        api.fetchCats(keyword).then(({ data }) => this.setState(data));
+        // 로딩 show
+        // console.log("show");
+        this.Loading.show();
+        //fetchCate는 요청을 의미한다.
+        api.fetchCats(keyword).then(({ data }) => {
+          this.setState(data);
+          // console.log("hide");
+          this.Loading.hide();
+          // 로딩 hide
+        });
       },
     });
 
@@ -39,7 +52,7 @@ class App {
   }
 
   setState(nextData) {
-    console.log(this);
+    // console.log(this);
     this.data = nextData;
     this.searchResult.setState(nextData);
   }

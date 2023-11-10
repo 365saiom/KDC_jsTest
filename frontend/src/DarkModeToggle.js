@@ -1,7 +1,7 @@
 class DarkModeToggle {
   isDarkMode = null;
 
-  constructor({ $target, onSearch }) {
+  constructor({ $target }) {
     const $wrapper = document.createElement("section");
     const $DarkModeToggle = document.createElement("input");
     this.$DarkModeToggle = $DarkModeToggle;
@@ -35,6 +35,4 @@ class DarkModeToggle {
       isDarkMode ? "dark" : "light"
     );
   }
-
-  render() {}
 }
