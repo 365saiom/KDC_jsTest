@@ -29,6 +29,18 @@ class App {
           // 로딩 hide
         });
       },
+      onRandomSearch: () => {
+        // 로딩 show
+        // console.log("show");
+        this.Loading.show();
+        //fetchCate는 요청을 의미한다.
+        api.fetchRandomCats().then(({ data }) => {
+          this.setState(data);
+          // console.log("hide");
+          this.Loading.hide();
+          // 로딩 hide
+        });
+      },
     });
 
     this.searchResult = new SearchResult({
