@@ -46,10 +46,11 @@ class App {
     this.searchResult = new SearchResult({
       $target,
       initialData: this.data,
-      onClick: (image) => {
-        this.imageInfo.setState({
+      onClick: (cat) => {
+        this.imageInfo.showDetail({
+          /* visible을 통해 모달창을 띄워준다. */
           visible: true,
-          image,
+          cat,
         });
       },
     });

@@ -18,9 +18,19 @@ class ImageInfo {
     this.render();
   }
 
+  showDetail(data) {
+    console.log(data);
+    api.fetchCatDetail(data.cat.id).then(({ data }) => {
+      this.setState({
+        visible: true,
+        cat: data,
+      });
+    });
+  }
+
   render() {
     if (this.data.visible) {
-      const { name, url, temperament, origin } = this.data.image;
+      const { name, url, temperament, origin } = this.data.cat;
 
       this.$imageInfo.innerHTML = `
         <div class="content-wrapper">
