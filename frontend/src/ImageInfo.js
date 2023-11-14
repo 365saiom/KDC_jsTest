@@ -28,6 +28,14 @@ class ImageInfo {
     });
   }
 
+  /* 모달창 닫기 메소드 */
+  closeImageInfo() {
+    this.setState({
+      visible: false,
+      cat: undefined,
+    });
+  }
+
   render() {
     if (this.data.visible) {
       const { name, url, temperament, origin } = this.data.cat;
@@ -45,6 +53,26 @@ class ImageInfo {
           </div>
         </div>`;
       this.$imageInfo.style.display = "block";
+
+      // this.$imageInfo.querySelector(".close").addEventListener("click", (e) => {
+      //   this.closeImageInfo();
+      // });
+
+      /* Esc 키보드 이벤트 사용한 모달창 닫기 */
+      document.addEventListener("keydown", (e) => {
+        console.log(e.key);
+        if (e.key === "Escape") {
+          this.closeImageInfo();
+        }
+      });
+
+      /* click 이벤트 사용한 모달창 닫기 */
+      this.$imageInfo.addEventListener("click", (e) => {
+        console.log(e.target.className);
+        if (e.target.className === "ImageInfo" || "close") {
+          this.closeImageInfo();
+        }
+      });
     } else {
       this.$imageInfo.style.display = "none";
     }
