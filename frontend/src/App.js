@@ -3,6 +3,7 @@ console.log("app is running!");
 class App {
   $target = null;
   data = [];
+  page = 1;
 
   constructor($target) {
     this.$target = $target;
@@ -53,6 +54,30 @@ class App {
           /* visible을 통해 모달창을 띄워준다. */
           visible: true,
           cat,
+        });
+      },
+      onNextPage: () => {
+        console.log("다음 페이지 로딩");
+        this.Loading.show();
+        const keywordHistory =
+          localStorage.getItem("keywordHistory") === null
+            ? []
+            : localStorage.getItem("keywordHistory").split(",");
+        console.log(keywordHistory);
+
+        const lastKeyword = KeywordHistory[0];
+        const page = this.page + 1;
+
+        // fetchCate는 요청을 의미한다.
+        api.fetchCatsPage(lastKeyword, page).then(({ data }) => {
+          console.log(data);
+
+          let newData = this.data.concat(data);
+          console.log(newData);
+
+          this.setState(newData);
+          this.page = page;
+          this.Loading.hide();
         });
       },
     });
