@@ -22,36 +22,34 @@ class SearchResult {
     this.render();
   }
   // 요소가 화면에 보이는 지를 감지하는 메소드
-  isElementInViewport(el) {
-    // rect = 좌표 정보이며, 각 요소 이미지의 왼쪽 상단의 꼭지점이 좌표 기준이 된다.
-    var rect = el.getBoundingClientRect();
-    return (
-      rect.top >= 0 &&
-      rect.left >= 0 &&
-      rect.bottom <=
-        (window.innerHeight || document.documentElement.clientHeight) &&
-      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-  }
+  listObserver = new IntersectionObserver((items, observer) => {
+    // console.log(items.length);
+    items.forEach((item) => {
+      // 아이템이 화면에 보일 떄
+      if (item.isIntersecting) {
+        // 이미지를 로드한다.
+        item.target.querySelector("img").src =
+          item.target.querySelector("img").dataset.src;
 
-  applyEventToElement = (items) => {
-    document.addEventListener("scroll", () => {
-      items.forEach((el, index) => {
-        console.log(items.length);
-        console.log(index);
-        if (this.isElementInViewport(el) && items.length - 1 === index) {
+        // 마지막 요소를 찾아낸다.
+        // console.log(this.data.length);
+        let dataIndex = Number(item.target.dataset.index);
+        console.log(dataIndex);
+        // 마지막 요소라면? nextPage 호출
+        if (dataIndex + 1 === this.data.length) {
+          console.log("마지막");
           this.onNextPage();
         }
-      });
+      }
     });
-  };
+  });
 
   render() {
     this.$searchResult.innerHTML = this.data
       .map(
-        (cat) => `
-          <li class="item">
-            <img src=${cat.url} alt=${cat.name} />
+        (cat, index) => `
+          <li class="item" data-index=${index}>
+            <img src="https://via.placeholder.com/200x300" data-src=${cat.url} alt=${cat.name} />
           </li>
         `
       )
@@ -61,9 +59,7 @@ class SearchResult {
       $item.addEventListener("click", () => {
         this.onClick(this.data[index]);
       });
+      this.listObserver.observe($item);
     });
-
-    let listItems = this.$searchResult.querySelectorAll(".item");
-    this.applyEventToElement(listItems);
   }
 }
